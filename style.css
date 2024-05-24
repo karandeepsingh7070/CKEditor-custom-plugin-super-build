@@ -23,6 +23,14 @@
     display: grid;
     grid-template-columns: repeat(4,1fr);
 }
+.grid-item {
+    margin: 0;
+}
+/* for 1 : 1 images of grid */
+/* .grid-item img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+} */
 
 .gallery-item, .grid-item {
     box-sizing: border-box;
