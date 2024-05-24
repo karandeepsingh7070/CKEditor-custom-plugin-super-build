@@ -24,9 +24,9 @@
     grid-template-columns: repeat(4,1fr);
 }
 
-.gallery-item {
+.gallery-item, .grid-item {
     box-sizing: border-box;
 }
-.gallery-item img {
+.gallery-item img, .grid-item img {
     width: 100%;
 }

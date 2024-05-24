@@ -24,7 +24,7 @@ function initCkEditor() {
             plugins: [ Essentials, Paragraph, Heading, List, Bold, Italic,FindAndReplace,LinkEditing,GridImagesPlugin,
                 Image, ImageInsert,Base64UploadAdapter,ImageResize,ImageCaption,ImageResizeEditing,ImageEditing,ImageToolbar,ImageInsertViaUrl,PictureEditing,
                 Table, TableToolbar, TableProperties, TableCellProperties, ],
-            toolbar: [ 'heading', 'bold', 'italic', 'numberedList', 'bulletedList','findAndReplace','insertImage', 'imageToolbar','insertTable', 'pluginBox','insertGallery' ],
+            toolbar: [ 'heading', 'bold', 'italic', 'numberedList', 'bulletedList','findAndReplace','insertImage', 'imageToolbar','insertTable', 'pluginBox','insertGallery','insertGrid' ],
             table: {
                 contentToolbar: [
                     'tableColumn', 'tableRow', 'mergeTableCells',

@@ -35,7 +35,7 @@ export default class GridImagesPluginEditing extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 const div = viewWriter.createContainerElement('div', {
                     class: 'grid',
-                    style: `grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
+                    style: `display: grid; grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
                 });
                 return toWidget(div, viewWriter, { label: 'grid widget' });
             }
@@ -57,7 +57,7 @@ export default class GridImagesPluginEditing extends Plugin {
             view: (modelElement, { writer: viewWriter }) => {
                 return writer.createContainerElement('div', {
                     class: 'grid',
-                    style: `grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
+                    style: `display: grid; grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
                 });
             }
         });
