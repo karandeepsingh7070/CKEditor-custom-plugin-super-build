@@ -3,53 +3,51 @@
 import { ButtonView } from '@ckeditor/ckeditor5-ui';
 import { Plugin } from '@ckeditor/ckeditor5-core';
 
-export default class GalleryPluginUi extends Plugin {
+export default class GridImagesPluginUI extends Plugin {
     init() {
-        console.log( 'GalleryPluginUI#init() got called' );
+        console.log( 'GridImagesPluginUI#init() got called' );
 
         const editor = this.editor;
         const t = editor.t;
-        editor.ui.componentFactory.add( 'insertGallery', locale => {
+        editor.ui.componentFactory.add( 'insertGrid', locale => {
             const buttonView = new ButtonView( locale );
 
             buttonView.set( {
-                label: 'Insert gallery',
+                label: 'Insert grid',
                 withText: true,
                 tooltip: true
             } );
 
             buttonView.on( 'execute', () => {
-                const input = document.createElement( 'input' );
+                const columns = prompt('Enter the number of images per row:', '3');
+                const input = document.createElement('input');
                 input.type = 'file';
                 input.accept = 'image/*';
                 input.multiple = true;
 
                 input.onchange = () => {
-                    const files = Array.from( input.files );
+                    const files = Array.from(input.files);
 
-                    editor.model.change( writer => {
+                    editor.model.change(writer => {
                         const selection = editor.model.document.selection;
-                        let gallery = selection.getFirstPosition().findAncestor('gallery');
+                        const grid = writer.createElement('grid', { columns });
 
-                        if (!gallery) {
-                            gallery = writer.createElement('gallery');
-                            writer.insert(gallery, selection.getFirstPosition());
-                        }
-
-                        files.forEach( file => {
+                        files.forEach(file => {
                             const reader = new FileReader();
 
                             reader.onload = () => {
-                                editor.model.change( writer => {
-                                    const galleryItem = writer.createElement('galleryItem', {
+                                editor.model.change(writer => {
+                                    const gridItem = writer.createElement('gridItem', {
                                         src: reader.result
                                     });
-                                    writer.append(galleryItem, gallery);
+                                    writer.append(gridItem, grid);
                                 });
                             };
 
-                            reader.readAsDataURL( file );
+                            reader.readAsDataURL(file);
                         });
+
+                        writer.insert(grid, selection.getFirstPosition());
                     });
                 };
 
