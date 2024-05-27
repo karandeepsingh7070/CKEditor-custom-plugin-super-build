@@ -56,5 +56,14 @@ export default class GridImagesPluginUI extends Plugin {
 
             return buttonView;
         } );
+        const observer = new MutationObserver(() => {
+            console.log(editor.editing.view.getDomRoot().querySelectorAll('.gallery-item'))
+            const images = editor.editing.view.getDomRoot().querySelectorAll('.gallery-item');
+            images.forEach(image => {
+                image.addEventListener('click', () => console.log("something"));
+            });
+        });
+        
+        observer.observe(document.body, { childList: true, subtree: true });
     }
 }
