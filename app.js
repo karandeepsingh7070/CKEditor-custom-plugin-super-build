@@ -21,7 +21,8 @@ import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 // import CKEditorInspector from '@ckeditor/ckeditor5-inspector'; 
 
 console.log(("initialised CK Editor"))
-function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter }) {
+function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter,cred,cb }) {
+    let timer;
     ClassicEditor
         .create(document.querySelector('#editor'), {
             plugins: [Essentials, Paragraph, Heading, List, Bold, Italic, FindAndReplace, LinkEditing, GridImagesPlugin, GalleryPlugin, HtmlEmbed,
@@ -100,6 +101,20 @@ function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter }) {
         })
         .then(editor => {
             console.log('Editor was initialized', editor);
+            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+                return new ImageUploadAdapter(loader, cred.accessToken, cred.apiKey, cb)
+            }
+            editor.model.document.on('change:data', () => {
+                const editorData = editor.getData();
+                clearTimeout(timer)
+                timer = setTimeout(() => {
+                    ckEditorDataSave(editorData);
+                    console.log("customsdsf",editorData)
+                }, 1000)
+            });
+            if (value) {
+                editor.setData(value);
+            }
 
             // CKEditorInspector.attach( 'editor', editor ); Debugger tool for ckeditor
 
@@ -110,5 +125,5 @@ function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter }) {
         });
 }
 
-// window.initCkEditor = initCkEditor
-initCkEditor()
+window.initCkEditor = initCkEditor
+// initCkEditor({ value: "", ckEditorDataSave : null, ImageUploadAdapter : null })
