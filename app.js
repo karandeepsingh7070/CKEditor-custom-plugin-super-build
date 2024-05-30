@@ -21,11 +21,11 @@ import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 // import CKEditorInspector from '@ckeditor/ckeditor5-inspector'; 
 
 console.log(("initialised CK Editor"))
-function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter,cred,cb }) {
+function initCkEditor() {
     let timer;
     ClassicEditor
         .create(document.querySelector('#editor'), {
-            plugins: [Essentials, Paragraph, Heading, List, Bold, Italic, FindAndReplace, LinkEditing, GridImagesPlugin, GalleryPlugin, HtmlEmbed,
+            plugins: [Essentials, Paragraph, Heading, List, Bold, Italic, FindAndReplace, LinkEditing, HtmlEmbed,GridImagesPlugin,
                 Base64UploadAdapter, ImageResize, ImageCaption, ImageResizeEditing, PictureEditing, Image, LinkImage,
                 Font,
                 Strikethrough, Underline,
@@ -41,6 +41,7 @@ function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter,cred,cb }) {
                     'imageStyle:inline',
                     'imageStyle:block',
                     'imageStyle:side',
+                    'imageStyle:alignLeft',
                     '|',
                     'toggleImageCaption',
                     'linkImage',
@@ -101,20 +102,20 @@ function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter,cred,cb }) {
         })
         .then(editor => {
             console.log('Editor was initialized', editor);
-            editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
-                return new ImageUploadAdapter(loader, cred.accessToken, cred.apiKey, cb)
-            }
-            editor.model.document.on('change:data', () => {
-                const editorData = editor.getData();
-                clearTimeout(timer)
-                timer = setTimeout(() => {
-                    ckEditorDataSave(editorData);
-                    console.log("customsdsf",editorData)
-                }, 1000)
-            });
-            if (value) {
-                editor.setData(value);
-            }
+            //custom upload adapter
+            // editor.plugins.get('FileRepository').createUploadAdapter = (loader) => {
+            //     return new ImageUploadAdapter(loader, cred.accessToken, cred.apiKey, cb)
+            // }
+            // editor.model.document.on('change:data', () => {
+            //     const editorData = editor.getData();
+            //     clearTimeout(timer)
+            //     timer = setTimeout(() => {
+            //         ckEditorDataSave(editorData);
+            //     }, 1000)
+            // });
+            // if (value) {
+            //     editor.setData(value);
+            // }
 
             // CKEditorInspector.attach( 'editor', editor ); Debugger tool for ckeditor
 
@@ -126,4 +127,6 @@ function initCkEditor({ value, ckEditorDataSave, ImageUploadAdapter,cred,cb }) {
 }
 
 window.initCkEditor = initCkEditor
+initCkEditor()
+// export default initCkEditor
 // initCkEditor({ value: "", ckEditorDataSave : null, ImageUploadAdapter : null })

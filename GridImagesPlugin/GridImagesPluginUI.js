@@ -24,7 +24,6 @@ export default class GridImagesPluginUI extends Plugin {
                 input.type = 'file';
                 input.accept = 'image/*';
                 input.multiple = true;
-
                 input.onchange = () => {
                     const files = Array.from(input.files);
 
@@ -50,6 +49,31 @@ export default class GridImagesPluginUI extends Plugin {
                         writer.insert(grid, selection.getFirstPosition());
                     });
                 };
+                //custom upload adapter
+                // input.onchange = () => {
+                //     const files = Array.from(input.files);
+
+                //     editor.model.change(writer => {
+                //         const selection = editor.model.document.selection;
+                //         const grid = writer.createElement('grid', { columns });
+                //         const loader = editor.plugins.get('FileRepository').createLoader(files);
+                //         loader.upload().then((response) => {
+                //             editor.model.change(writer => {
+                    
+                //                 files.forEach(image => {
+                //                     const imageElement = writer.createElement('gridItem', {
+                //                         src: response.default
+                //                     });
+                //                     writer.append(imageElement, grid);
+                //                 });
+                    
+                //                 editor.model.insertContent(grid, selection);
+                //             });
+                //         }).catch((e) => {
+                //             console.log(e)
+                //         })
+                //     });
+                // };
 
                 input.click();
             });

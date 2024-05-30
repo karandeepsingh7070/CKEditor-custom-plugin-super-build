@@ -32,29 +32,29 @@ export default class GridImagesPluginEditing extends Plugin {
         const conversion = this.editor.conversion;
         conversion.for('editingDowncast').elementToElement({
             model: 'grid',
-            view: (modelElement, { writer: viewWriter }) => {
-                const div = viewWriter.createContainerElement('div', {
+            view: (modelElement, { writer }) => {
+                const div = writer.createContainerElement('div', {
                     class: 'grid',
                     style: `display: grid; gap: 10px; grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
                 });
-                return toWidget(div, viewWriter, { label: 'grid widget' });
+                return toWidget(div, writer, { label: 'grid widget' });
             }
         });
 
         conversion.for('editingDowncast').elementToElement({
             model: 'gridItem',
-            view: (modelElement, { writer: viewWriter }) => {
-                const figure = viewWriter.createContainerElement('figure', { class: 'grid-item' });
-                const img = viewWriter.createEmptyElement('img', { src: modelElement.getAttribute('src') });
-                viewWriter.insert(viewWriter.createPositionAt(figure, 0), img);
-                return toWidget(figure, viewWriter);
+            view: (modelElement, { writer }) => {
+                const figure = writer.createContainerElement('figure', { class: 'grid-item' });
+                const img = writer.createEmptyElement('img', { src: modelElement.getAttribute('src') });
+                writer.insert(writer.createPositionAt(figure, 0), img);
+                return toWidget(figure, writer);
             }
         });
 
         // Data conversion
         conversion.for('dataDowncast').elementToElement({
             model: 'grid',
-            view: (modelElement, { writer: viewWriter }) => {
+            view: (modelElement, { writer }) => {
                 return writer.createContainerElement('div', {
                     class: 'grid',
                     style: `display: grid; gap: 10px; grid-template-columns: repeat(${modelElement.getAttribute('columns') || 3}, 1fr);`
@@ -64,11 +64,12 @@ export default class GridImagesPluginEditing extends Plugin {
 
         conversion.for('dataDowncast').elementToElement({
             model: 'gridItem',
-            view: (modelElement, { writer: viewWriter }) => {
-                const figure = viewWriter.createContainerElement('figure', { class: 'grid-item' });
-                const img = viewWriter.createEmptyElement('img', { src: modelElement.getAttribute('src') });
-                viewWriter.insert(viewWriter.createPositionAt(figure, 0), img);
-                return figure;
+            view: (modelElement, { writer }) => {
+                const figure = writer.createContainerElement('figure', { class: 'grid-item' });
+                const img = writer.createEmptyElement('img', { src: modelElement.getAttribute('src') });
+                writer.insert(writer.createPositionAt(figure, 0), img);
+                return toWidgetEditable(img, writer);
+                // return figure;
             }
         });
 
@@ -77,11 +78,11 @@ export default class GridImagesPluginEditing extends Plugin {
                 name: 'div',
                 classes: 'grid'
             },
-            model: (viewElement, { writer: modelWriter }) => {
+            model: (viewElement, { writer }) => {
                 const columns = viewElement.getStyle('grid-template-columns')
                     ? viewElement.getStyle('grid-template-columns').match(/repeat\((\d+), 1fr\)/)[1]
                     : 3;
-                return modelWriter.createElement('grid', { columns });
+                return writer.createElement('grid', { columns });
             }
         });
 
@@ -90,9 +91,9 @@ export default class GridImagesPluginEditing extends Plugin {
                 name: 'figure',
                 classes: 'grid-item'
             },
-            model: (viewElement, { writer: modelWriter }) => {
+            model: (viewElement, { writer }) => {
                 const src = viewElement.getChild(0).getAttribute('src');
-                return modelWriter.createElement('gridItem', { src });
+                return writer.createElement('gridItem', { src });
             }
         });
     }
