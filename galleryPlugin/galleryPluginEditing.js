@@ -31,35 +31,40 @@ export default class GalleryPluginEditing extends Plugin {
         const conversion = this.editor.conversion;
         conversion.for( 'editingDowncast' ).elementToElement({
             model: 'gallery',
-            view: ( modelElement, { writer: viewWriter } ) => {
-                const div = viewWriter.createContainerElement( 'div', { class: 'gallery' } );
-                return toWidget( div, viewWriter, { label: 'gallery widget' } );
+            view: ( modelElement, { writer } ) => {
+                const div = writer.createContainerElement( 'div', { class: 'gallery' } );
+                return toWidget( div, writer, { label: 'gallery widget' } );
             }
         });
 
         conversion.for( 'editingDowncast' ).elementToElement({
             model: 'galleryItem',
-            view: ( modelElement, { writer: viewWriter } ) => {
-                const figure = viewWriter.createContainerElement( 'figure', { class: 'gallery-item' } );
-                const img = viewWriter.createEmptyElement( 'img', { src: modelElement.getAttribute( 'src' ) } );
-                viewWriter.insert( viewWriter.createPositionAt( figure, 0 ), img );
-                return toWidget( figure, viewWriter );
+            view: ( modelElement, { writer } ) => {
+                const figure = writer.createContainerElement( 'figure', { class: 'gallery-item' } );
+                const img = writer.createEmptyElement( 'img', { src: modelElement.getAttribute( 'src' ) } );
+                writer.insert( writer.createPositionAt( figure, 0 ), img );
+                return toWidget( figure, writer );
             }
         });
 
         // Data conversion
         conversion.for( 'dataDowncast' ).elementToElement({
             model: 'gallery',
-            view: 'div'
+            view: (modelElement, { writer }) => {
+                return writer.createContainerElement('div', {
+                    class: 'gallery',
+                });
+            }
         });
 
         conversion.for( 'dataDowncast' ).elementToElement({
             model: 'galleryItem',
-            view: ( modelElement, { writer: viewWriter } ) => {
-                const figure = viewWriter.createContainerElement( 'figure', { class: 'gallery-item' } );
-                const img = viewWriter.createEmptyElement( 'img', { src: modelElement.getAttribute( 'src' ) } );
-                viewWriter.insert( viewWriter.createPositionAt( figure, 0 ), img );
-                return figure;
+            view: ( modelElement, { writer } ) => {
+                const figure = writer.createContainerElement( 'figure', { class: 'gallery-item' } );
+                const img = writer.createEmptyElement( 'img', { src: modelElement.getAttribute( 'src' ) } );
+                writer.insert( writer.createPositionAt( figure, 0 ), img );
+                return toWidgetEditable(figure, writer);
+                // return figure;
             }
         });
 
@@ -68,7 +73,9 @@ export default class GalleryPluginEditing extends Plugin {
                 name: 'div',
                 classes: 'gallery'
             },
-            model: 'gallery'
+            model: (viewElement, { writer }) => {
+                return writer.createElement('grid');
+            }
         });
 
         conversion.for( 'upcast' ).elementToElement({
@@ -76,9 +83,9 @@ export default class GalleryPluginEditing extends Plugin {
                 name: 'figure',
                 classes: 'gallery-item'
             },
-            model: ( viewElement, { writer: modelWriter } ) => {
+            model: ( viewElement, { writer } ) => {
                 const src = viewElement.getChild( 0 ).getAttribute( 'src' );
-                return modelWriter.createElement( 'galleryItem', { src } );
+                return writer.createElement( 'galleryItem', { src } );
             }
         });
     }
