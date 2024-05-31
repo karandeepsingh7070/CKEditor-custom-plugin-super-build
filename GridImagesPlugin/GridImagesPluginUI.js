@@ -56,23 +56,24 @@ export default class GridImagesPluginUI extends Plugin {
                 //     editor.model.change(writer => {
                 //         const selection = editor.model.document.selection;
                 //         const grid = writer.createElement('grid', { columns });
-                //         const loader = editor.plugins.get('FileRepository').createLoader(files);
-                //         loader.upload().then((response) => {
-                //             editor.model.change(writer => {
-                    
-                //                 files.forEach(image => {
-                //                     const imageElement = writer.createElement('gridItem', {
-                //                         src: response.default
-                //                     });
-                //                     writer.append(imageElement, grid);
+                //         files.forEach(image => {
+                //             const loader = editor.plugins.get('FileRepository').createLoader(image);
+                //             loader.upload().then((response) => {
+                //                 editor.model.change(writer => {
+                        
+                //                     // files.forEach(image => {
+                //                         const imageElement = writer.createElement('gridItem', {
+                //                             src: response.default
+                //                         });
+                //                         writer.append(imageElement, grid);
+                //                     // });
                 //                 });
-                    
-                //                 editor.model.insertContent(grid, selection);
-                //             });
-                //         }).catch((e) => {
-                //             console.log(e)
+                //             }).catch((e) => {
+                //                 console.log(e)
+                //             })
+                //         });
+                //         editor.model.insertContent(grid, selection);
                 //         })
-                //     });
                 // };
 
                 input.click();
